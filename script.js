@@ -879,7 +879,6 @@
      EFEITOS TÁTICOS (em teste)
      · briefing: a linha de operação é digitada; o status muda com a fase
      · mira: sai do leão, procura, trava no FRIDAY e fica só nos cantos
-     · visão noturna: liga no leão ao passar o mouse (toque no celular)
      O holofote, a fumaça e as tarjas são só CSS.
      ========================================================= */
   var taticosIniciados = false;
@@ -957,14 +956,6 @@
     });
   }
 
-  (function visaoNoturna() {
-    var leao = document.getElementById("bfMarca");
-    if (!leao) return;
-    leao.addEventListener("mouseenter", function () { leao.classList.add("is-nv"); });
-    leao.addEventListener("mouseleave", function () { leao.classList.remove("is-nv"); });
-    /* no celular não existe hover: um toque liga e desliga */
-    leao.addEventListener("click", function () { leao.classList.toggle("is-nv"); });
-  })();
 
   function finalizar() {
     relogios.forEach(clearTimeout);
