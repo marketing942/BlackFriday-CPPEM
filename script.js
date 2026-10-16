@@ -47,6 +47,10 @@
        raios continuam — esta chave só mexe no fogo que fica aceso. */
     fogoAmbiente: false,
 
+    /* Brasinhas (vagalumes) subindo pela página inteira. Desligado a pedido:
+       true religa o efeito. */
+    brasasPagina: false,
+
     pagina:  "Black Friday CPPEM 2026",
     produto: "BLACK FRIDAY CPPEM 04/11"
   };
@@ -732,7 +736,7 @@
      ========================================================= */
   (function brasasPelaPagina() {
     var cv = document.getElementById("brasas");
-    if (!cv || reduced) return;
+    if (!cv || reduced || !CONFIG.brasasPagina) return;
     var ctx = cv.getContext("2d");
     var W = 0, H = 0, alvo = 0, lista = [], ultimoB = 0, ativo = false;
 
