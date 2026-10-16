@@ -11,7 +11,6 @@ sobre grafite (sem vermelho), Anton + Montserrat.
 
 | O quê | Onde |
 |---|---|
-| ⚠ **Link do grupo do WhatsApp** — vazio, o inscrito vai para o canal do YouTube | `CONFIG.grupoWhatsApp` no `script.js` |
 | Link do vídeo agendado da live (opcional: vira "Ativar lembrete") | `CONFIG.youtubeLive` |
 | Aba da planilha (hoje `BLACK_FRIDAY`, criada sozinha pelo Apps Script) | `CONFIG.sheetAba` |
 | `og:image` 1200×630 com URL absoluta para o preview no WhatsApp | `<head>` do `index.html` |
