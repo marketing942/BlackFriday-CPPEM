@@ -875,6 +875,97 @@
     acordar();
   }
 
+  /* =========================================================
+     EFEITOS TÁTICOS (em teste)
+     · briefing: a linha de operação é digitada; o status muda com a fase
+     · mira: sai do leão, procura, trava no FRIDAY e fica só nos cantos
+     · visão noturna: liga no leão ao passar o mouse (toque no celular)
+     O holofote, a fumaça e as tarjas são só CSS.
+     ========================================================= */
+  var taticosIniciados = false;
+
+  function iniciarTaticos() {
+    if (taticosIniciados) return;
+    taticosIniciados = true;
+    digitarBriefing();
+    setTimeout(mirar, reduced ? 0 : 500);
+  }
+
+  function digitarBriefing() {
+    var el = document.querySelector("#briefing .briefing__txt");
+    if (!el) return;
+    var curto = window.innerWidth < 560;
+    var prefixo = (curto ? "> OP. BLACK FRIDAY · CÓD. 1945 · " : "> OPERAÇÃO BLACK FRIDAY · CÓDIGO 1945 · STATUS: ");
+    var status = faseAtual === "ao-vivo" ? "EM ANDAMENTO" : faseAtual === "depois" ? "ENCERRADA" : "AGUARDANDO ORDEM";
+    var b = document.createElement("b");
+    if (reduced) { el.textContent = prefixo; b.textContent = status; el.appendChild(b); return; }
+    var i = 0, alvo = prefixo + status;
+    (function tecla() {
+      i++;
+      if (i <= prefixo.length) el.textContent = prefixo.slice(0, i);
+      else { if (!b.parentNode) el.appendChild(b); b.textContent = status.slice(0, i - prefixo.length); }
+      if (i < alvo.length) setTimeout(tecla, 26 + Math.random() * 30);
+    })();
+  }
+
+  /* retângulo das LETRAS do FRIDAY (o bloco ocupa a coluna inteira) */
+  function caixaFriday(grid) {
+    var letras = bfFriday ? bfFriday.querySelectorAll("i") : [];
+    if (!letras.length) return null;
+    var a = letras[0].getBoundingClientRect(), z = letras[letras.length - 1].getBoundingClientRect();
+    var g = grid.getBoundingClientRect(), folga = 0;
+    return {
+      left: a.left - g.left - folga, top: Math.min(a.top, z.top) - g.top - folga,
+      width: z.right - a.left + folga * 2, height: Math.max(a.bottom, z.bottom) - Math.min(a.top, z.top) + folga * 2
+    };
+  }
+
+  function aplicarCaixa(el, c) {
+    el.style.left = c.left + "px"; el.style.top = c.top + "px";
+    el.style.width = c.width + "px"; el.style.height = c.height + "px";
+  }
+
+  function mirar() {
+    var mira = document.getElementById("mira");
+    var grid = document.querySelector(".hero__grid");
+    if (!mira || !grid) return;
+    var fim = caixaFriday(grid);
+    if (!fim) return;
+
+    /* começa pequena no centro do leão... */
+    var l = bfMarca.getBoundingClientRect(), g = grid.getBoundingClientRect();
+    mira.classList.add("sem-transicao");
+    aplicarCaixa(mira, { left: l.left - g.left + l.width / 2 - 70, top: l.top - g.top + l.height * .44 - 70, width: 140, height: 140 });
+    void mira.offsetWidth;
+    mira.classList.remove("sem-transicao");
+    mira.classList.add("is-ativa");
+
+    if (reduced) { aplicarCaixa(mira, fim); mira.classList.add("is-travada", "is-fixa"); return; }
+
+    /* ...varre até o FRIDAY, trava, e depois fica só nos cantos */
+    setTimeout(function () { aplicarCaixa(mira, caixaFriday(grid) || fim); }, 380);
+    setTimeout(function () { mira.classList.add("is-travada"); track("mira_travada"); }, 1350);
+    setTimeout(function () { mira.classList.add("is-fixa"); }, 3600);
+
+    window.addEventListener("resize", function () {
+      var c = caixaFriday(grid);
+      if (!c) return;
+      mira.classList.add("sem-transicao");
+      aplicarCaixa(mira, c);
+      void mira.offsetWidth;
+      mira.classList.remove("sem-transicao");
+    });
+  }
+
+  (function visaoNoturna() {
+    var leao = document.getElementById("bfMarca");
+    if (!leao) return;
+    leao.addEventListener("mouseenter", function () { leao.classList.add("is-nv"); });
+    leao.addEventListener("mouseleave", function () { leao.classList.remove("is-nv"); });
+    /* no celular não existe hover: um toque liga e desliga */
+    leao.addEventListener("click", function () { leao.classList.toggle("is-nv"); });
+  })();
+
   function finalizar() {
     relogios.forEach(clearTimeout);
     relogios = [];
@@ -883,6 +974,7 @@
     raiz.classList.add("is-pulado", "is-revelado");
     vidro.desligar();
     acenderCena();
+    iniciarTaticos();
   }
 
   /* A quebra de tela (vidro.trinca / vidro.estilhacar) e a explosão
@@ -898,7 +990,7 @@
     depois(150, function () { raiz.classList.add("fase-black"); });
     depois(700, function () { raiz.classList.add("fase-friday"); });
     depois(1300, function () { raiz.classList.add("fase-leao"); acenderCena(); });
-    depois(1650, function () { raiz.classList.add("is-revelado"); });
+    depois(1650, function () { raiz.classList.add("is-revelado"); iniciarTaticos(); });
     depois(2900, finalizar);
   }
 
@@ -922,6 +1014,8 @@
   } else {
     raiz.classList.add("is-revelado");
     acenderCena();
+    /* espera as fontes: a mira mede o FRIDAY já em Anton */
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(iniciarTaticos);
   }
 
   /* =========================================================

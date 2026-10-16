@@ -30,7 +30,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="public/leao-cppem.webp" type="image/webp">
 <link rel="stylesheet" href="styles.css">
 
@@ -82,6 +82,10 @@
 <section class="hero" id="topo">
   <div class="hero__bg" aria-hidden="true"></div>
   <div class="hero__grao" aria-hidden="true"></div>
+  <!-- holofote de helicóptero: um facho frio varrendo o hero -->
+  <div class="holofote" aria-hidden="true"><i></i></div>
+  <!-- fumaça baixa, rente ao chão, se dissipando devagar -->
+  <div class="fumaca" aria-hidden="true"><i></i><i></i><i></i></div>
   <canvas class="hero__vidro" id="vidro" aria-hidden="true"></canvas>
   <canvas class="hero__fogo" id="fogo" aria-hidden="true"></canvas>
   <canvas class="hero__raios" id="raios" aria-hidden="true"></canvas>
@@ -100,10 +104,24 @@
         <i class="onda o2"></i>
         <i class="onda o3"></i>
         <span class="bf__leao"><img src="public/leao-cppem.webp" alt="" width="586" height="640" fetchpriority="high"></span>
+        <!-- visão noturna: liga ao passar o mouse no leão -->
+        <i class="leao__nv"><b>NV · MODO NOTURNO</b></i>
+      </div>
+
+      <!-- mira tática: entra depois da abertura, trava no FRIDAY e fica só nos cantos -->
+      <div class="mira" id="mira" aria-hidden="true">
+        <i class="mira__canto c1"></i><i class="mira__canto c2"></i><i class="mira__canto c3"></i><i class="mira__canto c4"></i>
+        <i class="mira__cruz"></i>
+        <span class="mira__rotulo">Alvo travado</span>
       </div>
 
       <!-- ---------- coluna do título ---------- -->
       <div class="hero__cena">
+        <!-- briefing de operação, digitado pelo script -->
+        <p class="briefing anim d1" id="briefing" role="status" aria-label="Operação Black Friday, código 1945, status aguardando ordem">
+          <span class="briefing__txt" aria-hidden="true"></span><i class="briefing__cursor" aria-hidden="true"></i>
+        </p>
+
         <span class="alerta anim d1">
           <i class="alerta__ponto" aria-hidden="true"></i>
           <b data-fase-so="antes">Ao vivo no YouTube</b>
@@ -127,6 +145,7 @@
         </p>
 
         <div class="hero__linha anim d3">
+          <span class="cdown__rotulo" aria-hidden="true">T-menos · início da operação</span>
           <div class="cdown cdown--hero" id="cdownHero" role="timer" aria-live="off" aria-label="Contagem regressiva para a live">
             <div class="cdown__box"><b data-c="d">00</b><span>dias</span></div>
             <div class="cdown__box"><b data-c="h">00</b><span>horas</span></div>
@@ -318,31 +337,31 @@
   <div class="container">
     <div class="section__head" data-reveal>
       <span class="eyebrow">O que pode estar na Black</span>
-      <h2 class="section__title" id="lacrados-title">Tudo lacrado <span class="gold">até as 19h45</span></h2>
+      <h2 class="section__title" id="lacrados-title">Arquivo sigiloso <span class="gold">até as 19h45</span></h2>
     </div>
 
     <div class="lacrados">
       <article class="lacre" data-reveal>
-        <span class="lacre__fita" aria-hidden="true">Lacrado</span>
-        <span class="lacre__off" aria-hidden="true">??<small>%</small></span>
+        <span class="lacre__carimbo" aria-hidden="true">Sigiloso</span>
+        <span class="lacre__off tarja" aria-hidden="true">??<small>%</small><i>Confidencial</i></span>
         <h3>Mentorias</h3>
         <p>Cronograma, metas e acompanhamento até a prova.</p>
       </article>
       <article class="lacre" data-reveal>
-        <span class="lacre__fita" aria-hidden="true">Lacrado</span>
-        <span class="lacre__off" aria-hidden="true">??<small>%</small></span>
+        <span class="lacre__carimbo" aria-hidden="true">Sigiloso</span>
+        <span class="lacre__off tarja" aria-hidden="true">??<small>%</small><i>Confidencial</i></span>
         <h3>Materiais Bizurados</h3>
         <p>Resumos, questões e vade mecum no celular.</p>
       </article>
       <article class="lacre" data-reveal>
-        <span class="lacre__fita" aria-hidden="true">Lacrado</span>
-        <span class="lacre__off" aria-hidden="true">??<small>%</small></span>
+        <span class="lacre__carimbo" aria-hidden="true">Sigiloso</span>
+        <span class="lacre__off tarja" aria-hidden="true">??<small>%</small><i>Confidencial</i></span>
         <h3>Cursos e isoladas</h3>
         <p>Turmas e aulas no que a sua banca cobra.</p>
       </article>
       <article class="lacre lacre--prata" data-reveal>
-        <span class="lacre__fita" aria-hidden="true">Surpresa</span>
-        <span class="lacre__off" aria-hidden="true">?</span>
+        <span class="lacre__carimbo" aria-hidden="true">Ultrassecreto</span>
+        <span class="lacre__off tarja" aria-hidden="true">?<i>Confidencial</i></span>
         <h3>E mais uma coisa…</h3>
         <p>Essa a gente só conta ao vivo.</p>
       </article>
