@@ -82,6 +82,10 @@
 <section class="hero" id="topo">
   <div class="hero__bg" aria-hidden="true"></div>
   <div class="hero__grao" aria-hidden="true"></div>
+  <!-- leão de fundo: a foto realista entra em assets/leao-fundo.webp; enquanto o
+       arquivo não existir, o emblema prata faz o papel (onerror troca a imagem) -->
+  <img class="hero__leao" src="assets/leao-fundo.webp" alt="" aria-hidden="true"
+       onerror="this.onerror=null;this.src='assets/leao-cppem.webp';this.classList.add('is-emblema')">
   <!-- holofote de helicóptero: um facho frio varrendo o hero -->
   <div class="holofote" aria-hidden="true"><i></i></div>
   <!-- fumaça baixa, rente ao chão, se dissipando devagar -->
@@ -94,18 +98,6 @@
   <div class="hero__stage">
     <div class="container hero__grid">
 
-      <!-- ---------- o leão: peça central, atrás do texto ----------
-           É daqui que a explosão nasce. No desktop fica entre o título e o
-           cartão; no celular sobe para trás do título, mais apagado. -->
-      <div class="leao" id="bfMarca" aria-hidden="true">
-        <i class="leao__halo"></i>
-        <i class="nucleo"></i>
-        <i class="onda"></i>
-        <i class="onda o2"></i>
-        <i class="onda o3"></i>
-        <span class="bf__leao"><img src="assets/leao-cppem.webp" alt="" width="586" height="640" fetchpriority="high"></span>
-      </div>
-
       <!-- mira tática: entra depois da abertura, trava no FRIDAY e fica só nos cantos -->
       <div class="mira" id="mira" aria-hidden="true">
         <i class="mira__canto c1"></i><i class="mira__canto c2"></i><i class="mira__canto c3"></i><i class="mira__canto c4"></i>
@@ -115,10 +107,7 @@
 
       <!-- ---------- coluna do título ---------- -->
       <div class="hero__cena">
-        <!-- briefing de operação, digitado pelo script -->
-        <p class="briefing anim d1" id="briefing" role="status" aria-label="Operação Black Friday, código 1945, status aguardando ordem">
-          <span class="briefing__txt" aria-hidden="true"></span><i class="briefing__cursor" aria-hidden="true"></i>
-        </p>
+        <img class="hero__logo anim d1" src="assets/logo-cppem-prata.webp" alt="CPPEM" width="600" height="200">
 
         <span class="alerta anim d1">
           <i class="alerta__ponto" aria-hidden="true"></i>
@@ -133,27 +122,88 @@
         <h1 class="bf" aria-label="Black Friday CPPEM">
           <span class="bf__black" id="bfBlack" aria-hidden="true"><span class="bf__in"><i style="--i:0">B</i><i style="--i:1">L</i><i style="--i:2">A</i><i style="--i:3">C</i><i style="--i:4">K</i></span></span>
           <span class="bf__friday" id="bfFriday" aria-hidden="true"><span class="bf__in"><i style="--i:0">F</i><i style="--i:1">R</i><i style="--i:2">I</i><i style="--i:3">D</i><i style="--i:4">A</i><i style="--i:5">Y</i></span></span>
+          <i class="bala" id="bala" aria-hidden="true"></i>
+          <!-- a bala em câmera lenta: saindo do corte do K, girando no eixo.
+               Posição calculada pelo script (--bl-x / --bl-y) sobre a letra. -->
+          <span class="bala-lenta" aria-hidden="true">
+            <svg viewBox="-60 -30 200 60">
+              <defs>
+                <linearGradient id="bl-cobre" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0"    stop-color="#2a1208"/>
+                  <stop offset=".12"  stop-color="#7a3a17"/>
+                  <stop offset=".28"  stop-color="#e9a774"/>
+                  <stop offset=".34"  stop-color="#fff1e0"/>
+                  <stop offset=".42"  stop-color="#d08550"/>
+                  <stop offset=".66"  stop-color="#8f4620"/>
+                  <stop offset=".86"  stop-color="#4a200c"/>
+                  <stop offset="1"    stop-color="#1a0904"/>
+                </linearGradient>
+                <linearGradient id="bl-rebote" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset=".7" stop-color="#d9b26a" stop-opacity="0"/>
+                  <stop offset=".9" stop-color="#d9b26a" stop-opacity=".35"/>
+                  <stop offset="1"  stop-color="#d9b26a" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="bl-ponta" x1="0" x2="1">
+                  <stop offset="0" stop-color="#000" stop-opacity="0"/>
+                  <stop offset=".75" stop-color="#000" stop-opacity=".15"/>
+                  <stop offset="1" stop-color="#000" stop-opacity=".5"/>
+                </linearGradient>
+                <linearGradient id="bl-saida" x1="0" x2="1">
+                  <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+                  <stop offset=".14" stop-color="#fff" stop-opacity="1"/>
+                </linearGradient>
+                <mask id="bl-mascara" maskUnits="userSpaceOnUse" x="-60" y="-30" width="200" height="60">
+                  <rect x="0" y="-30" width="140" height="60" fill="url(#bl-saida)"/>
+                </mask>
+                <clipPath id="bl-forma">
+                  <path d="M0 -8.6 L6 -10.6 H44 C66 -10.6 84 -6.5 95 -1.4 Q97 0 95 1.4 C84 6.5 66 10.6 44 10.6 H6 L0 8.6 Z"/>
+                </clipPath>
+                <radialGradient id="bl-calor" cx=".5" cy=".5" r=".5">
+                  <stop offset="0" stop-color="#ffe2b8" stop-opacity=".45"/>
+                  <stop offset="1" stop-color="#ffb070" stop-opacity="0"/>
+                </radialGradient>
+                <filter id="bl-borrao" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="1.6 .5"/></filter>
+              </defs>
+              <path class="bl-mach" d="M97 0 Q70 -14 40 -26 M97 0 Q70 14 40 26"/>
+              <ellipse class="bl-anel" cx="-2" cy="0" rx="4" ry="12"/>
+              <ellipse class="bl-anel b2" cx="-2" cy="0" rx="4" ry="12"/>
+              <rect class="bl-rastro" x="-58" y="-3" width="62" height="6" rx="3" filter="url(#bl-borrao)"/>
+              <g mask="url(#bl-mascara)">
+                <ellipse cx="90" cy="0" rx="12" ry="7" fill="url(#bl-calor)"/>
+                <g clip-path="url(#bl-forma)">
+                  <rect x="-2" y="-12" width="102" height="24" fill="url(#bl-cobre)"/>
+                  <g class="bl-raias">
+                    <path d="M4 -16 L60 -11.5 M4 -10 L60 -5.5 M4 -4 L60 .5 M4 2 L60 6.5 M4 8 L60 12.5 M4 14 L60 18.5 M4 -22 L60 -17.5"/>
+                  </g>
+                  <rect x="14" y="-12" width="2.4" height="24" fill="#2a1208" opacity=".55"/>
+                  <rect x="16.4" y="-12" width="1" height="24" fill="#ffd9b0" opacity=".35"/>
+                  <rect x="-2" y="-12" width="102" height="24" fill="url(#bl-ponta)"/>
+                  <rect x="-2" y="-12" width="102" height="24" fill="url(#bl-rebote)"/>
+                  <rect class="bl-especular" x="8" y="-7.2" width="62" height="1.6" rx=".8" fill="#fffaf2"/>
+                  <rect x="-2" y="-12" width="3" height="24" fill="#120602" opacity=".85"/>
+                </g>
+              </g>
+              <g class="bl-cacos">
+                <path d="M2 -14 l3 -2 l1 3 z"/><path d="M-4 12 l4 1 l-2 3 z"/><path d="M8 -20 l2 -1 l.6 2 z"/><path d="M-8 -9 l2 1 l-2 1.5 z"/>
+              </g>
+            </svg>
+          </span>
+          <i class="bf__cicatriz" aria-hidden="true"></i>
         </h1>
 
-        <p class="bf__assina anim d1">CPPEM <i></i> Concursos Públicos</p>
 
         <p class="hero__sub anim d2">
-          <mark>Os maiores descontos do ano</mark> em mentorias,
-          materiais e cursos, revelados numa live só.
+          <mark>A oferta mais brutal do ano</mark> para sua aprovação
+          nas carreiras policiais.
         </p>
 
         <div class="hero__linha anim d3">
-          <span class="cdown__rotulo" aria-hidden="true">T-menos · início da operação</span>
           <div class="cdown cdown--hero" id="cdownHero" role="timer" aria-live="off" aria-label="Contagem regressiva para a live">
             <div class="cdown__box"><b data-c="d">00</b><span>dias</span></div>
             <div class="cdown__box"><b data-c="h">00</b><span>horas</span></div>
             <div class="cdown__box"><b data-c="m">00</b><span>min</span></div>
             <div class="cdown__box"><b data-c="s">00</b><span>seg</span></div>
           </div>
-          <a class="btn btn--ghost btn--yt" data-youtube-canal data-cta="hero-youtube" href="https://www.youtube.com/@cppemconcursos?sub_confirmation=1" target="_blank" rel="noopener">
-            <svg class="ico-yt" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 0 0 .5 6.5C0 8.4 0 12 0 12s0 3.6.5 5.5a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.5.5-5.5s0-3.6-.5-5.5zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>
-            <span>Inscrever no canal</span>
-          </a>
         </div>
       </div>
 
@@ -163,22 +213,7 @@
            · name="name" / "phone" / "email", e .pxa_mask_phone no telefone. -->
       <div class="inscricao anim d3" id="inscricao">
 
-        <!-- selo "menor preço": faixa colada no topo do cartão -->
-        <div class="selo-card" role="note" aria-label="Menor preço do ano, melhores ofertas, condições só na live">
-          <span class="selo-card__icone" aria-hidden="true">%</span>
-          <span class="selo-card__rot" aria-hidden="true">Selo Black CPPEM</span>
-          <b class="selo-card__titulo" aria-hidden="true">Menor preço <br>do ano</b>
-          <ul class="selo-card__lista" aria-hidden="true">
-            <li>Melhores ofertas</li>
-            <li>Preços só na live</li>
-          </ul>
-        </div>
-
         <div class="inscricao__card">
-          <div class="inscricao__topo">
-            <span class="inscricao__tag">Lista VIP · gratuita</span>
-            <span class="inscricao__tempo" id="formTempo" aria-hidden="true">--</span>
-          </div>
 
           <h2 class="inscricao__titulo">Fique na <span class="gold nowrap">primeira fila</span></h2>
           <p class="inscricao__lead">
@@ -327,43 +362,31 @@
   </div>
 </section>
 
-<!-- ================= OS LACRADOS =================
-     Categorias do catálogo da CPPEM. O desconto de cada uma é o segredo da
-     live — por isso o card mostra "??%" e não um número. Se alguma
-     categoria não entrar na Black, remova o <article> inteiro. -->
+<!-- ================= O SEGREDO =================
+     Um único arquivo, trancado: o cadeado balança de vez em quando, a tarja
+     cobre a porcentagem e o carimbo diz quando abre. -->
 <section class="section section--alt" id="lacrados" aria-labelledby="lacrados-title">
   <div class="container">
     <div class="section__head" data-reveal>
-      <span class="eyebrow">O que pode estar na Black</span>
-      <h2 class="section__title" id="lacrados-title">Arquivo sigiloso <span class="gold">até as 19h45</span></h2>
+      <span class="eyebrow">Arquivo sigiloso</span>
+      <h2 class="section__title" id="lacrados-title">Um único segredo, <span class="gold">trancado até as 19h45</span></h2>
     </div>
-
-    <div class="lacrados">
-      <article class="lacre" data-reveal>
-        <span class="lacre__carimbo" aria-hidden="true">Sigiloso</span>
-        <span class="lacre__off tarja" aria-hidden="true">??<small>%</small><i>Confidencial</i></span>
-        <h3>Mentorias</h3>
-        <p>Cronograma, metas e acompanhamento até a prova.</p>
-      </article>
-      <article class="lacre" data-reveal>
-        <span class="lacre__carimbo" aria-hidden="true">Sigiloso</span>
-        <span class="lacre__off tarja" aria-hidden="true">??<small>%</small><i>Confidencial</i></span>
-        <h3>Materiais Bizurados</h3>
-        <p>Resumos, questões e vade mecum no celular.</p>
-      </article>
-      <article class="lacre" data-reveal>
-        <span class="lacre__carimbo" aria-hidden="true">Sigiloso</span>
-        <span class="lacre__off tarja" aria-hidden="true">??<small>%</small><i>Confidencial</i></span>
-        <h3>Cursos e isoladas</h3>
-        <p>Turmas e aulas no que a sua banca cobra.</p>
-      </article>
-      <article class="lacre lacre--prata" data-reveal>
-        <span class="lacre__carimbo" aria-hidden="true">Ultrassecreto</span>
-        <span class="lacre__off tarja" aria-hidden="true">?<i>Confidencial</i></span>
-        <h3>E mais uma coisa…</h3>
-        <p>Essa a gente só conta ao vivo.</p>
-      </article>
-    </div>
+    <article class="segredo" data-reveal>
+      <span class="lacre__carimbo segredo__carimbo" aria-hidden="true">Ultrassecreto</span>
+      <div class="segredo__cadeado" aria-hidden="true">
+        <svg viewBox="0 0 64 80"><path class="segredo__haste" d="M18 36V24a14 14 0 0 1 28 0v12" fill="none" stroke-width="7" stroke-linecap="round"/><rect x="8" y="34" width="48" height="40" rx="7"/><circle cx="32" cy="51" r="5"/><path d="M32 54v9" stroke-width="5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="segredo__corpo">
+        <span class="lacre__off tarja segredo__off" aria-hidden="true">??<small>%</small><i>Confidencial</i></span>
+        <h3>A oferta da Black CPPEM</h3>
+        <p>Mentorias, materiais e cursos: o que entra e quanto custa só sai do cofre
+          <b>quarta, 04/11, às 19h45</b>, ao vivo.</p>
+        <a class="btn btn--gold btn--lg shine" href="#inscricao" data-ir-form data-cta="segredo">
+          <span>Quero a chave do cofre</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </article>
   </div>
 </section>
 

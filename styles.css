@@ -1015,3 +1015,159 @@ html.is-abertura:not(.is-revelado) .holofote { opacity: 0; }
   .topbar__nome { display: none; }
   .topbar__yt { display: inline; }
 }
+
+/* =========================================================
+   O TÍTULO BALEADO
+   Duas metades idênticas recortadas na diagonal (de 0/72% a 100%/30%).
+   Antes do tiro elas coincidem; depois, a de baixo desliza e a
+   cicatriz do corte fica brilhando.
+   ========================================================= */
+.bf { position: relative; }
+.bf__lado { display: block; }
+.bf__lado--a { clip-path: polygon(-30% -40%, 130% -40%, 130% 17.4%, -30% 84.6%); }
+.bf__lado--b { position: absolute; left: 0; top: 0; width: 100%; clip-path: polygon(-30% 84.6%, 130% 17.4%, 130% 140%, -30% 140%); transition: transform .45s cubic-bezier(.2, 1.4, .4, 1); }
+.bf.is-baleado .bf__lado--b { transform: translate(.05em, .045em) rotate(.8deg); }
+
+/* a cicatriz: linha fina e quente ao longo do corte */
+.bf__cicatriz {
+  position: absolute; left: 0; top: 72%; width: var(--corte-len, 100%); height: 3px; margin-top: -1.5px;
+  transform-origin: 0 50%; transform: rotate(var(--corte-ang, -.2rad)) scaleX(0);
+  background: linear-gradient(90deg, transparent, rgba(255, 220, 160, .9) 12%, #fff 50%, rgba(255, 200, 120, .9) 88%, transparent);
+  box-shadow: 0 0 10px rgba(255, 190, 110, .9), 0 0 22px rgba(255, 150, 60, .5);
+  pointer-events: none;
+}
+.bf.is-baleado .bf__cicatriz { animation: cicatriz .9s var(--ease) forwards; }
+@keyframes cicatriz {
+  0%   { transform: rotate(var(--corte-ang)) scaleX(1); opacity: 1; height: 5px; }
+  100% { transform: rotate(var(--corte-ang)) scaleX(1); opacity: .45; height: 2px; }
+}
+
+/* a bala: ponta clara com rastro longo para trás */
+.bala {
+  position: absolute; left: 0; top: 72%; width: 14px; height: 4px; margin-top: -2px; z-index: 3;
+  transform-origin: 0 50%; opacity: 0; pointer-events: none;
+  border-radius: 0 4px 4px 0; background: #fff8e8;
+  box-shadow: 0 0 10px #fff, 0 0 20px rgba(255, 200, 120, .9);
+}
+.bala::before {
+  content: ""; position: absolute; right: 100%; top: 50%; width: 260px; height: 2px; margin-top: -1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 210, 150, .25) 40%, rgba(255, 245, 225, .95));
+}
+
+/* =========================================================
+   LOGO PRATA NO TOPO, LEÃO DE FUNDO
+   ========================================================= */
+.hero__logo { width: clamp(150px, 13vw, 190px); height: auto; margin-bottom: 1.4rem; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, .6)); }
+
+.hero__leao {
+  position: absolute; z-index: 1; pointer-events: none;
+  /* foto realista: ocupa o meio do hero e some nas bordas */
+  left: 50%; top: 50%; height: 100%; width: auto; max-width: none; transform: translate(-45%, -50%);
+  opacity: .55;
+  -webkit-mask: radial-gradient(closest-side, #000 55%, transparent);
+          mask: radial-gradient(closest-side, #000 55%, transparent);
+}
+/* sem a foto: o emblema prata grande, escuro, como relevo no fundo */
+.hero__leao.is-emblema {
+  height: min(78%, 620px); opacity: .12; filter: grayscale(1) brightness(1.4) drop-shadow(0 0 60px rgba(255, 255, 255, .15));
+  -webkit-mask: none; mask: none;
+}
+html.is-abertura:not(.is-revelado) .hero__leao { opacity: 0; }
+.hero__leao { transition: opacity 1.4s var(--ease); }
+
+/* =========================================================
+   UM ÚNICO SEGREDO TRANCADO
+   ========================================================= */
+.segredo {
+  position: relative; display: grid; grid-template-columns: auto 1fr; gap: 2.4rem; align-items: center;
+  max-width: 860px; margin: 0 auto; padding: 2.4rem 2.6rem;
+  border-radius: 20px; border: 1px solid rgba(217, 178, 106, .35);
+  background:
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, .02) 0 14px, transparent 14px 28px),
+    linear-gradient(160deg, #26252b, #141317);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+.segredo__carimbo { top: 22px; right: 22px; font-size: .78rem; }
+.segredo__cadeado { width: clamp(90px, 12vw, 130px); }
+.segredo__cadeado svg { width: 100%; overflow: visible; filter: drop-shadow(0 12px 20px rgba(0, 0, 0, .6)); }
+.segredo__cadeado rect { fill: #c9a25c; }
+.segredo__cadeado circle { fill: #1a1307; }
+.segredo__cadeado path { stroke: #1a1307; }
+.segredo__haste { stroke: #b9bec6 !important; transform-origin: 46px 36px; animation: cadeado-forca 4s ease-in-out infinite; }
+@keyframes cadeado-forca {
+  0%, 80%, 100% { transform: none; }
+  84% { transform: translateY(-5px); }
+  88% { transform: translateY(0); }
+  91% { transform: translateY(-3px); }
+  94% { transform: translateY(0); }
+}
+.segredo__corpo { display: flex; flex-direction: column; align-items: flex-start; gap: .6rem; }
+.segredo__off { font-size: 4.4rem; }
+.segredo__off.tarja i { top: -4%; height: 108%; font-size: .78rem; }
+.segredo__corpo h3 { font-size: 1.35rem; font-weight: 800; }
+.segredo__corpo p { color: var(--muted); max-width: 30rem; }
+.segredo__corpo p b { color: var(--text); }
+.segredo__corpo .btn { margin-top: .6rem; }
+
+@media (max-width: 700px) {
+  .hero__logo { width: 120px; margin-bottom: .8rem; }
+  .hero__leao, .hero__leao.is-emblema { height: auto; width: 120vw; top: 34%; transform: translate(-50%, -50%); }
+  .segredo { grid-template-columns: 1fr; justify-items: center; text-align: center; padding: 2rem 1.3rem; gap: 1.2rem; }
+  .segredo__corpo { align-items: center; }
+  .segredo__carimbo { top: 14px; right: 14px; }
+  .segredo__off { font-size: 3.6rem; }
+}
+@media (prefers-reduced-motion: reduce) { .bala { display: none; } }
+
+/* =========================================================
+   A BALA EM CÂMERA LENTA
+   Projétil de cobre saindo do corte do K, como se ainda estivesse
+   atravessando: o script põe a base exatamente na borda da letra, na
+   linha do corte. Gira no eixo (raiamento correndo), treme de leve
+   (vibração do voo) e o ar se desloca em volta.
+   ========================================================= */
+.bala-lenta {
+  position: absolute; left: var(--bl-x, 90%); top: var(--bl-y, 34%); z-index: 3; width: .62em; pointer-events: none;
+  transform-origin: 0 50%;
+  transform: translate(-.02em, -50%) rotate(var(--corte-ang, -.3rad));
+  opacity: 0;
+}
+.bala-lenta svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 .05em .06em rgba(0, 0, 0, .65)); }
+.bf.is-baleado .bala-lenta { animation: bala-acende .35s ease-out forwards; }
+@keyframes bala-acende {
+  0%   { opacity: 0; filter: brightness(3); }
+  25%  { opacity: 1; }
+  100% { opacity: 1; filter: brightness(1); }
+}
+.bala-lenta svg { animation: bala-vibra .09s steps(2) infinite; }
+@keyframes bala-vibra { 0% { transform: translate(0, 0); } 50% { transform: translate(.4px, -.3px); } 100% { transform: translate(-.3px, .3px); } }
+
+.bl-raias path { stroke: rgba(30, 12, 4, .32); stroke-width: .7; fill: none; }
+.bl-raias { animation: bl-gira .7s linear infinite; }
+@keyframes bl-gira { from { transform: translateY(0); } to { transform: translateY(6px); } }
+.bl-especular { animation: bl-brilho .7s linear infinite; }
+@keyframes bl-brilho { 0%, 100% { opacity: .85; } 50% { opacity: .55; } }
+
+.bl-rastro { fill: rgba(255, 240, 220, .35); animation: rastro-pulsa 1.6s ease-in-out infinite; }
+@keyframes rastro-pulsa { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+.bl-mach { fill: none; stroke: rgba(255, 245, 230, .18); stroke-width: .6; animation: bl-mach 1.2s ease-in-out infinite; }
+@keyframes bl-mach { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+.bl-anel {
+  fill: none; stroke: rgba(255, 245, 230, .45); stroke-width: .8;
+  transform-box: fill-box; transform-origin: center;
+  animation: bl-anel 1.8s cubic-bezier(.2, .6, .3, 1) infinite;
+}
+.bl-anel.b2 { animation-delay: .9s; }
+@keyframes bl-anel {
+  0%   { opacity: 0; transform: translateX(0) scale(.5); }
+  20%  { opacity: .8; }
+  100% { opacity: 0; transform: translateX(-36px) scale(1.4, 1.6); }
+}
+.bl-cacos path { fill: #e8e2d6; opacity: .8; }
+.bl-cacos { animation: bl-cacos 2.4s ease-out infinite; }
+@keyframes bl-cacos { 0% { transform: translate(0, 0); opacity: .9; } 100% { transform: translate(14px, 4px); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .bf.is-baleado .bala-lenta { opacity: 1; animation: none; }
+  .bala-lenta svg, .bl-raias, .bl-anel, .bl-cacos { animation: none; }
+}

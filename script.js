@@ -861,7 +861,97 @@
   var bfBlack  = document.getElementById("bfBlack");
   var bfFriday = document.getElementById("bfFriday");
   /* a explosão nasce no centro do LEÃO, não do bloco da marca (que inclui a assinatura) */
-  var bfMarca  = document.querySelector(".bf__leao") || document.getElementById("bfMarca");
+  /* a mira sai do centro do hero (o leão do centro virou fundo) */
+  var bfMarca  = document.querySelector(".hero__leao") || hero;
+
+  /* =========================================================
+     O TIRO NO TÍTULO
+     O título é montado em duas metades idênticas (a original e um clone),
+     recortadas na diagonal. Quando a mira trava, uma bala atravessa a linha
+     do corte, faíscas saem na entrada e na saída, e a metade de baixo
+     desliza: o "Black Friday" fica partido, com a cicatriz do tiro.
+     ========================================================= */
+  var tituloBf = document.querySelector("h1.bf");
+  (function montarCorte() {
+    if (!tituloBf || !bfBlack || !bfFriday) return;
+    var ladoA = document.createElement("span");
+    ladoA.className = "bf__lado bf__lado--a";
+    ladoA.setAttribute("aria-hidden", "true");
+    ladoA.appendChild(bfBlack);
+    ladoA.appendChild(bfFriday);
+    var ladoB = ladoA.cloneNode(true);
+    ladoB.className = "bf__lado bf__lado--b";
+    Array.prototype.forEach.call(ladoB.querySelectorAll("[id]"), function (el) { el.removeAttribute("id"); });
+    tituloBf.insertBefore(ladoB, tituloBf.firstChild);
+    tituloBf.insertBefore(ladoA, ladoB);
+    medirCorte();
+    window.addEventListener("resize", medirCorte);
+  })();
+
+  /* A bala lenta sai do corte do K: acha a borda direita do K na altura
+     em que a linha do corte passa por ele e põe a base da bala ali. O K
+     da Anton é mais estreito nessa altura que a caixa da letra, por isso o
+     recuo de 14% da largura dele. */
+  function posicionarBalaLenta() {
+    var bl = tituloBf && tituloBf.querySelector(".bala-lenta");
+    var lado = tituloBf && tituloBf.querySelector(".bf__lado--a");
+    var letraK = lado && lado.querySelector(".bf__black i:last-child");
+    if (!bl || !letraK) return;
+    var L = lado.getBoundingClientRect(), K = letraK.getBoundingClientRect(), T = tituloBf.getBoundingClientRect();
+    var x = (K.right - L.left) - K.width * .14;
+    var y = L.height * (.72 - .42 * (x / L.width));
+    bl.style.setProperty("--bl-x", (x + L.left - T.left) + "px");
+    bl.style.setProperty("--bl-y", (y + L.top - T.top) + "px");
+    distanciaAteK = Math.hypot(x, L.height * .72 - y);
+  }
+  var distanciaAteK = 0;
+
+  /* a linha do corte vai de (0, 72%) a (100%, 30%) da caixa do título */
+  function medirCorte() {
+    if (!tituloBf) return;
+    var lado = tituloBf.querySelector(".bf__lado--a");
+    var W = lado.offsetWidth, H = lado.offsetHeight;
+    var dy = H * .42, ang = Math.atan2(dy, W);
+    tituloBf.style.setProperty("--corte-ang", (-ang) + "rad");
+    tituloBf.style.setProperty("--corte-len", Math.hypot(W, dy) + "px");
+    tituloBf.style.setProperty("--corte-w", W + "px");
+    posicionarBalaLenta();
+  }
+
+  var disparado = false;
+  function disparar() {
+    if (disparado || !tituloBf) return;
+    disparado = true;
+    medirCorte();
+    if (reduced) { tituloBf.classList.add("is-baleado"); return; }
+
+    var bala = document.getElementById("bala");
+    var len = parseFloat(tituloBf.style.getPropertyValue("--corte-len")) || 400;
+    var ang = tituloBf.style.getPropertyValue("--corte-ang") || "0rad";
+    var r = tituloBf.querySelector(".bf__lado--a").getBoundingClientRect(), hh = hero.getBoundingClientRect();
+    var entrada = { x: r.left - hh.left, y: r.top - hh.top + r.height * .72 };
+    var saida   = { x: r.right - hh.left, y: r.top - hh.top + r.height * .30 };
+
+    if (bala && bala.animate) {
+      posicionarBalaLenta();
+      bala.animate([
+        { transform: "rotate(" + ang + ") translateX(-420px)", opacity: 1 },
+        { transform: "rotate(" + ang + ") translateX(" + (distanciaAteK - 14) + "px)", opacity: 1 }
+      ], { duration: 190, easing: "linear" });
+    }
+    /* o corte acontece quando a bala chega no meio do título */
+    setTimeout(function () {
+      fogo.faiscas(entrada.x, entrada.y, .35);
+    }, 95);
+    setTimeout(function () {
+      tituloBf.classList.add("is-baleado");
+      fogo.faiscas(saida.x, saida.y, .55);
+      piscar(saida, .4, 300);
+      tremer(1);
+      acordar();
+      track("titulo_baleado");
+    }, 190);
+  }
   var relogios = [];
   var FASES = ["fase-black", "fase-friday", "fase-leao"];
 
@@ -938,11 +1028,12 @@
     mira.classList.remove("sem-transicao");
     mira.classList.add("is-ativa");
 
-    if (reduced) { aplicarCaixa(mira, fim); mira.classList.add("is-travada", "is-fixa"); return; }
+    if (reduced) { aplicarCaixa(mira, fim); mira.classList.add("is-travada", "is-fixa"); disparar(); return; }
 
     /* ...varre até o FRIDAY, trava, e depois fica só nos cantos */
     setTimeout(function () { aplicarCaixa(mira, caixaFriday(grid) || fim); }, 380);
     setTimeout(function () { mira.classList.add("is-travada"); track("mira_travada"); }, 1350);
+    setTimeout(disparar, 1750);   /* travou: fogo */
     setTimeout(function () { mira.classList.add("is-fixa"); }, 3600);
 
     window.addEventListener("resize", function () {
