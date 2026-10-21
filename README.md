@@ -1,6 +1,6 @@
 # Black Friday CPPEM — página de captura
 
-Landing da live de Black Friday da CPPEM: **quarta, 04/11, às 19h45, ao vivo no YouTube**
+Landing da live de Black Friday da CPPEM: **quarta, 04/11, às 19h07, ao vivo no YouTube**
 ([@cppemconcursos](https://www.youtube.com/@cppemconcursos)). A página capta a **lista VIP**
 (nome, WhatsApp, e-mail) e leva o inscrito ao grupo do WhatsApp.
 

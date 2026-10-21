@@ -1,5 +1,5 @@
 /* =========================================================
-   CPPEM · BLACK FRIDAY — live 04/11 às 19h45 no YouTube
+   CPPEM · BLACK FRIDAY — live 04/11 às 19h07 no YouTube
 
    Duas metades:
    1. A CENA — abertura (vidro, raios, explosão), fogo e raios ambientes,
@@ -17,7 +17,7 @@
   var CONFIG = {
     /* Início da live. A contagem, o pavio, a agenda e a troca de fase
        saem todos daqui. */
-    inicio: "2026-11-04T19:45:00-03:00",
+    inicio: "2026-11-04T19:07:00-03:00",
 
     /* Por quanto tempo depois do início a página mostra "ao vivo agora".
        Passado isso, ela vira "a live acabou" e aponta para a gravação. */
@@ -987,7 +987,7 @@
     var el = document.querySelector("#briefing .briefing__txt");
     if (!el) return;
     var curto = window.innerWidth < 560;
-    var prefixo = (curto ? "> OP. BLACK FRIDAY · CÓD. 1945 · " : "> OPERAÇÃO BLACK FRIDAY · CÓDIGO 1945 · STATUS: ");
+    var prefixo = (curto ? "> OP. BLACK FRIDAY · CÓD. 1907 · " : "> OPERAÇÃO BLACK FRIDAY · CÓDIGO 1907 · STATUS: ");
     var status = faseAtual === "ao-vivo" ? "EM ANDAMENTO" : faseAtual === "depois" ? "ENCERRADA" : "AGUARDANDO ORDEM";
     var b = document.createElement("b");
     if (reduced) { el.textContent = prefixo; b.textContent = status; el.appendChild(b); return; }
