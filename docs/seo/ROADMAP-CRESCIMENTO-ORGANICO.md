@@ -8,7 +8,7 @@ Relatório consolidado do ecossistema: [RELATORIO-GERAL-SEO-ECOSSISTEMA.md](RELA
 ## 0 a 30 dias — correções e quick wins
 
 - **Concluído** — Title/description/JSON-LD/robots
-- **Proposto** — Informar o domínio → canonical, og:url, og:image 1200×630 absoluta e sitemap
+- **Concluído** — Domínio aplicado → canonical, og:url, og:image 1200×630 absoluta e sitemap
 - **Proposto** — Decidir o destino pós-live (gravação na mesma URL ou redirect para a oferta vigente)
 
 ## 31 a 60 dias — expansão semântica e ajustes por dados

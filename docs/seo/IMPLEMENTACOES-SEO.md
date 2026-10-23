@@ -21,7 +21,10 @@ Extraídos do HTML renderizado localmente (Playwright/HTTP), antes e depois.
 |---|---|---|
 | `title` | Black Friday CPPEM · 04/11 às 19h07, ao vivo no YouTube | Black Friday CPPEM 2026 · Live 04/11 às 19h07 no YouTube |
 | `description` | Black Friday CPPEM: uma live só, quarta-feira, 04/11, às 19h07, no YouTube da CPPEM. Os descontos do ano em mentorias, materiais e cursos são revelados ao vivo. Entre na lista VIP e receba o lembrete no WhatsApp. | Black Friday CPPEM 2026: live no YouTube na quarta, 04/11, às 19h07, com os descontos do ano em mentorias, materiais e cursos. Entre na lista VIP. |
+| `canonical` | — | https://black-friday.cppem.com.br/ |
 | `robots` | — | index, follow, max-image-preview:large |
+| `og:image` | — | https://black-friday.cppem.com.br/assets/og-black-friday.jpg |
+| `og:url` | — | https://black-friday.cppem.com.br/ |
 | JSON-LD |  | WebPage |
 
 ## Dados estruturados

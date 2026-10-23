@@ -1,9 +1,9 @@
 # Black Friday CPPEM — página de campanha
 # Indexável durante a campanha. Os arquivos internos do repositório são
 # publicados pela Vercel junto com o site e não têm valor de busca.
-# ⚠️ Quando o domínio final estiver definido, acrescente:
-#   Sitemap: https://<domínio>/sitemap.xml   (e crie o sitemap.xml)
 User-agent: *
 Allow: /
 Disallow: /docs/
 Disallow: /README.md
+
+Sitemap: https://black-friday.cppem.com.br/sitemap.xml

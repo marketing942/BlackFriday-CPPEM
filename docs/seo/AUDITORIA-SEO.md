@@ -5,7 +5,7 @@ Relatório consolidado do ecossistema: [RELATORIO-GERAL-SEO-ECOSSISTEMA.md](RELA
 
 ## Arquitetura
 
-- **Domínio de produção:** não identificado — evidência: nenhuma referência no código, no README nem no histórico do Git.
+- **Domínio de produção:** black-friday.cppem.com.br — evidência: informado pelo responsável em 23/10/2026.
 - **Stack:** HTML + CSS + JavaScript estáticos (`framework: null`), assets em `assets/`. Fontes do Google (Anton, Montserrat, Share Tech Mono).
 - **Renderização:** HTML estático; fases da campanha (antes/ao vivo/depois) trocadas por JavaScript a partir de `CONFIG.inicio`.
 
@@ -30,11 +30,11 @@ Gravidade: **P0** crítico (indexação/integridade) · **P1** alto impacto · *
 
 | Sev. | Problema | Evidência | Impacto | Status |
 |---|---|---|---|---|
-| P1 | Domínio final desconhecido | Sem domínio, não há canonical, `og:url` nem `og:image` absolutos (o README já lista a og:image como pendência) | Preview sem imagem e duplicação com `*.vercel.app` | Pendente (informar o domínio) |
+| P1 | Sem canonical, og:url e og:image absolutos | O README já listava a og:image 1200×630 como pendência | Preview sem imagem e duplicação com `*.vercel.app` | Corrigido (domínio black-friday.cppem.com.br; imagem recortada de leao-fundo.webp) |
 | P2 | Title sem o ano | `Black Friday CPPEM · 04/11 às 19h07, ao vivo no YouTube` | Buscas sazonais costumam incluir o ano | Corrigido |
 | P2 | Description com 232 caracteres |  | Corte | Corrigido (146) |
 | P2 | Sem dados estruturados |  |  | Corrigido (WebPage + Organization). Sem `Event` de propósito |
-| P2 | Sem robots.txt |  |  | Corrigido (sem linha de Sitemap até haver domínio) |
+| P2 | Sem robots.txt e sitemap |  |  | Corrigido |
 | P3 | URL de campanha nova a cada ano | Repositório/URL dedicados à edição | Autoridade não acumula entre edições | Recomendado (URL perene) |
 
 ## Limitações desta auditoria

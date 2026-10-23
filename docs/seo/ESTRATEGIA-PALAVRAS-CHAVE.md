@@ -50,7 +50,7 @@ URL por intenção.
 
 | Intenção / busca | URL que deve responder | Situação |
 |---|---|---|
-| black friday CPPEM | URL desta campanha (domínio a informar) | Implementado |
+| black friday CPPEM | black-friday.cppem.com.br | Implementado |
 
 ## Estratégia da página
 
